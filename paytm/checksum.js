@@ -41,6 +41,18 @@ function genchecksum(params, key, cb) {
     cb(undefined, params);
   });
 }
+function genchecksumbystring(params, key, cb) {
+
+  crypt.gen_salt(4, function (err, salt) {
+    var sha256 = crypto.createHash('sha256').update(params + '|' + salt).digest('hex');
+    var check_sum = sha256 + salt;
+    var encrypted = crypt.encrypt(check_sum, key);
+
+     var CHECKSUMHASH = encodeURIComponent(encrypted);
+     CHECKSUMHASH = encrypted;
+    cb(undefined, CHECKSUMHASH);
+  });
+}
 
 
 function verifychecksum(params, key) {
@@ -70,39 +82,21 @@ function verifychecksum(params, key) {
   }
 }
 
+function verifychecksumbystring(params, key,checksumhash) {
+
+    var checksum = crypt.decrypt(checksumhash, key);
+    var salt = checksum.substr(checksum.length - 4);
+    var sha256 = checksum.substr(0, checksum.length - 4);
+    var hash = crypto.createHash('sha256').update(params + '|' + salt).digest('hex');
+    if (hash === sha256) {
+      return true;
+    } else {
+      util.log("checksum is wrong");
+      return false;
+    }
+  } 
+
 module.exports.genchecksum = genchecksum;
 module.exports.verifychecksum = verifychecksum;
-
-
-/* ---------------- TEST CODE ---------------- */
-/*
-(function () {
-
-  if (require.main === module) {
-       
-    var ver_param = {
-      MID: 'wVhtoq05771472615938',
-      ORDER_ID: 52,
-      CUST_ID: '298233',
-      TXN_AMOUNT: '1',
-      CHANNEL_ID: 'WEB',
-      INDUSTRY_TYPE_ID: 'Retail',
-      WEBSITE: 'PaytmMktPlace',
-      CHECKSUMHASH: '5xORNy+qP7G53XWptN7dh1AzD226cTTDsUe4yjAgKe19eO5olCPseqhFDmlmUTcSiEJFXuP/usVEjHlfMCgvqtI8rbkoUCVC3uKZzOBFpOw='
-    };
-    genchecksum(ver_param, config.mid_key_map[ver_param.MID], function (err, res) {
-      console.log(res);
-    });
-    if (verifychecksum(ver_param, config.mid_key_map[ver_param.MID])) {
-      console.log('verified checksum');
-    } else {
-      console.log("verification failed");
-    }
-
-  }
-}());
-
-
-
-
-*/
+module.exports.verifychecksumbystring = verifychecksumbystring;
+module.exports.genchecksumbystring = genchecksumbystring;
