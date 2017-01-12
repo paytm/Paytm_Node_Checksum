@@ -18,6 +18,17 @@ function route(request,response){
 				});
 				request.on('end', function() {
 					var decodedBody = querystring.parse(fullBody);
+					// below code snippet is mandatory, so that no one can use your checksumgeneration url for other purpose .
+					     for (name in decodedBody)
+					{
+
+					    var n = decodedBody[name].includes("REFUND");
+					     if(n == true)
+					    {
+					      decodedBody = {};
+					      throw new Error("SECURITY ERROR");
+					    }
+					}
 					paytm_checksum.genchecksum(decodedBody, paytm_config.MERCHANT_KEY, function (err, res) {
 						response.writeHead(200, {'Content-type' : 'text/json','Cache-Control': 'no-cache'});
 						response.write(JSON.stringify(res));
