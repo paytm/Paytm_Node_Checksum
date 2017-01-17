@@ -12,6 +12,14 @@ function route(request,response){
 			break;
 		case '/generate_checksum':
 			if(request.method == 'POST'){
+				var paramarray = {};
+				paramarray['MID'] = '';
+				paramarray['ORDER_ID'] = '';
+				paramarray['CUST_ID'] = '';
+				paramarray['INDUSTRY_TYPE_ID'] = '';
+				paramarray['CHANNEL_ID'] = '';
+				paramarray['TXN_AMOUNT'] = '';
+				paramarray['WEBSITE'] = '';
 				var fullBody = '';
 				request.on('data', function(chunk) {
 					fullBody += chunk.toString();
@@ -19,9 +27,9 @@ function route(request,response){
 				request.on('end', function() {
 					var decodedBody = querystring.parse(fullBody);
 					// below code snippet is mandatory, so that no one can use your checksumgeneration url for other purpose .
-					     for (name in decodedBody)
+					for (name in decodedBody)
 					{
-
+					    paramarray[name] = decodedBody[name];
 					    var n = decodedBody[name].includes("REFUND");
 					     if(n == true)
 					    {
@@ -29,7 +37,7 @@ function route(request,response){
 					      throw new Error("SECURITY ERROR");
 					    }
 					}
-					paytm_checksum.genchecksum(decodedBody, paytm_config.MERCHANT_KEY, function (err, res) {
+					paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
 						response.writeHead(200, {'Content-type' : 'text/json','Cache-Control': 'no-cache'});
 						response.write(JSON.stringify(res));
 						response.end();
