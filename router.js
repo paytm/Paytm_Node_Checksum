@@ -27,7 +27,7 @@ function route(request,response){
 				request.on('end', function() {
 					var decodedBody = querystring.parse(fullBody);
 					// below code snippet is mandatory, so that no one can use your checksumgeneration url for other purpose .
-					for (name in decodedBody)
+					for (var name in decodedBody)
 					{
 					    paramarray[name] = decodedBody[name];
 					    var n = decodedBody[name].includes("REFUND");
