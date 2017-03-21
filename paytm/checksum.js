@@ -32,8 +32,8 @@ function genchecksum(params, key, cb) {
     var check_sum = sha256 + salt;
     var encrypted = crypt.encrypt(check_sum, key);
     if (flag) {
-      params.CHECKSUM = (encrypted);
       params.CHECKSUM = encrypted;
+      params.CHECKSUM = encodeURIComponent(encrypted);
     } else {
       params.CHECKSUMHASH = (encrypted);
       params.payt_STATUS = '1';
