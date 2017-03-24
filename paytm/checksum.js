@@ -11,7 +11,7 @@ function paramsToString(params, mandatoryflag) {
   var flag = params.refund ? true : false;
   delete params.refund;
   var tempKeys = Object.keys(params);
-  if (!flag) tempKeys.sort();
+  tempKeys.sort();
   tempKeys.forEach(function (key) {
     if (key !== 'CHECKSUMHASH' ) {
       if (params[key] === 'null') params[key] = '';
