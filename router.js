@@ -29,12 +29,13 @@ function route(request,response){
 					// below code snippet is mandatory, so that no one can use your checksumgeneration url for other purpose .
 					for (var name in decodedBody)
 					{
-					    paramarray[name] = decodedBody[name];
+					   
 					    var n = decodedBody[name].includes("REFUND");
-					     if(n == true)
+					    var m = decodedBody[name].includes("|");
+						 paramarray[name] = decodedBody[name];
+					     if(n == false || m == false)
 					    {
-					      decodedBody = {};
-					      throw new Error("SECURITY ERROR");
+					      paramarray[name] = decodedBody[name];
 					    }
 					}
 					paytm_checksum.genchecksum(paramarray, paytm_config.MERCHANT_KEY, function (err, res) {
