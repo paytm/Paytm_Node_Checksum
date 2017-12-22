@@ -29,7 +29,6 @@ function route(request,response){
 						response.write(JSON.stringify(res));
 						response.end();
 					});
-				};
 			}else{
 				response.writeHead(200, {'Content-type' : 'text/json'});
 				response.end();
