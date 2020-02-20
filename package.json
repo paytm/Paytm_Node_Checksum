@@ -1,5 +1,5 @@
 {
-  "name": "PaytmChecksum",
+  "name": "paytmchecksum",
   "description": "This is for paytm checksum creation and verification in node",
   "version": "1.0.0",
   "author": "Soumya Vats",
