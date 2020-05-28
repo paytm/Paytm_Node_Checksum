@@ -22,7 +22,6 @@ class PaytmChecksum {
 		return decrypted;
 	}
 	static generateSignature(params, key) {
-		console.log(typeof params);
 		if (typeof params !== "object" && typeof params !== "string") {
 			var error = "string or object expected, " + (typeof params) + " given.";
 			return Promise.reject(error);
@@ -38,6 +37,9 @@ class PaytmChecksum {
 		if (typeof params !== "object" && typeof params !== "string") {
 		   	var error = "string or object expected, " + (typeof params) + " given.";
 			return Promise.reject(error);
+		}
+		if(params.hasOwnProperty("CHECKSUMHASH")){
+			delete params.CHECKSUMHASH
 		}
 		if (typeof params !== "string"){
 			params = PaytmChecksum.getStringByParams(params);
@@ -74,7 +76,7 @@ class PaytmChecksum {
 	static getStringByParams(params) {
 		var data = {};
 		Object.keys(params).sort().forEach(function(key,value) {
-			data[key] = (params[key] == null) ? "" : params[key];
+			data[key] = (params[key] !== null && params[key].toLowerCase() !== "null") ? params[key] : "";
 		});
 		return Object.values(data).join('|');
 	}
