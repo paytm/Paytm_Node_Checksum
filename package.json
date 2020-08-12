@@ -13,6 +13,7 @@
     "Signature",
     "Paytm payment"
   ],
+  "types": "index.d.ts",
   "homepage": "https://developer.paytm.com/docs/checksum/#node",
   "repository": {
     "type": "git",
