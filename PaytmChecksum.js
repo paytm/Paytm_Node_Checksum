@@ -4,6 +4,8 @@ var crypto = require('crypto');
 
 class PaytmChecksum {
 
+	static iv;
+
 	static encrypt(input, key) {
 		var cipher = crypto.createCipheriv('AES-128-CBC', key, PaytmChecksum.iv);
 		var encrypted = cipher.update(input, 'binary', 'base64');
@@ -90,5 +92,11 @@ class PaytmChecksum {
 		return PaytmChecksum.encrypt(hashString,key);
 	}
 }
+
 PaytmChecksum.iv = '@@@@&&&&####$$$$';
-module.exports = PaytmChecksum;
+
+if(typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+	module.exports = PaytmChecksum;
+} else {
+	window.PaytmChecksum = PaytmChecksum;
+}
