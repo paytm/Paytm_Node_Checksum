@@ -1,6 +1,6 @@
 /* More Details: https://developer.paytm.com/docs/checksum/#node */
 
-var PaytmChecksum = require("./PaytmChecksum");
+var PaytmChecksum = require("../PaytmChecksum");
 
 var paytmParams = {};
 
